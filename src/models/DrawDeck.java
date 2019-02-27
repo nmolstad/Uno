@@ -11,7 +11,8 @@ public class DrawDeck extends Deck {
 		//Set the index of that card to the index of the first card
 	}
 	
-	public void removeCard() {
+	public Card removeCard() {
 		//Remove the card from the last index of the list
+		return null;
 	}
 }

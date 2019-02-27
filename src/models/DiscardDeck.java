@@ -6,7 +6,7 @@ public class DiscardDeck {
 		super();
 	}
 	
-	public void insertCard() {
+	public void insertCard(Card card) {
 		//Add a card to the last index of the Array
 	}
 }
