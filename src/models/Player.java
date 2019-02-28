@@ -28,10 +28,14 @@ public class Player {
 	
 	public void drawCard(Card card) {
 		//Add card to hand
+		hand.add(card);
 	}
 	
 	public Card playCard() {
-		//Remove the Card from hand and return that Card
+		//Remove the Card from hand
+		
+		
+		//Return that Card
 		return null;
 	}
 }

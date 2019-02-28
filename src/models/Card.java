@@ -4,7 +4,7 @@ import enums.CardSuit;
 import enums.CardType;
 
 public class Card {
-	private final CardSuit suit;
+	private CardSuit suit;
 	private final CardType type;
 	
 	public Card(CardSuit suit, CardType type) {
@@ -16,7 +16,24 @@ public class Card {
 		return suit;
 	}
 	
+	public void setSuit(CardSuit suit) {
+		this.suit = suit;
+	}
+	
 	public CardType getType() {
 		return type;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		if(suit != null) {
+			builder.append(suit.toString()).append(" ").append(type.toString());
+		}else {
+			builder.append(type.toString());
+		}
+		return builder.toString();
+	}
+	
+	
 }
