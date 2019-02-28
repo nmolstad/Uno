@@ -23,17 +23,4 @@ public class Card {
 	public CardType getType() {
 		return type;
 	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		if(suit != null) {
-			builder.append(suit.toString()).append(" ").append(type.toString());
-		}else {
-			builder.append(type.toString());
-		}
-		return builder.toString();
-	}
-	
-	
 }

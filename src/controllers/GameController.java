@@ -1,8 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
-
-import enums.CardType;
+import enums.*;
 import models.*;
 
 public class GameController {
@@ -15,7 +13,7 @@ public class GameController {
 	private static Player currentPlayer;
 	private static Player winner;
 	private static Card currentCard;
-	private static int drawTwoStackAmount;
+	private static int drawStackAmount;
 	
 	public static void run() {
 		initializeGame();
@@ -97,36 +95,60 @@ public class GameController {
 	}
 	
 	private static void replenishDrawPile() {
-		//Swap the contents of drawPile and discardPile, then add the last card from drawPile to discardPile
+		//Put the contents of discardPile in drawPile and clear discardPile.
+		drawPile.setCards(discardPile.getCards());
+		discardPile.getCards().clear();
+		
+		//Add the last card from drawPile to discardPile
+		discardPile.insertCard(drawPile.removeCard());
 		
 		//Shuffle drawPile
+		drawPile.shuffleDeck();
 	}
 	
 	private static void performAction() {
 		//If the card is a skip, call skipTurn()
-		
-		//If the card is a draw two, call drawTwo and add drawTwoStackAmount to the next player, then call skipTurn.
-		
+		if(currentCard.getType() == CardType.SKIP) {
+			skipTurn();
+		}
+		//If the card is a draw two, call drawTwo and add drawStackAmount to the next player, then call skipTurn.
+		else if(currentCard.getType() == CardType.DRAW_TWO) {
+			drawTwo();
+			skipTurn();
+		}
 		//If the card is a reverse, set isClockwise to false if true or vice-versa
-		isClockwise = !isClockwise;
-		
+		else if(currentCard.getType() == CardType.REVERSE) {
+			isClockwise = !isClockwise;
+		}
 		//If the card is a wild, call setColor
-		
-		//If the card is a wild draw four, call drawTwo twice and setColor, then add drawTwoStackAmount to the next player and call skipTurn.
-		
+		else if(currentCard.getType() == CardType.WILD) {
+			setColor();
+		}
+		//If the card is a wild draw four, call drawTwo twice and setColor, then add drawStackAmount to the next player and call skipTurn.
+		else if(currentCard.getType() == CardType.WILD_DRAW_FOUR) {
+			setColor();
+			drawTwo();
+			drawTwo();
+			
+		}
 		
 	}
 	
 	private static void skipTurn() {
 		//Add 1 to the turn rotation if isClockwise is true or subtract 1 if isClockwise is false
+		turnCount = isClockwise ? turnCount + 1 : turnCount - 1;
 	}
 	
 	private static void drawTwo() {
-		//Add two cards to drawTwoStackAmount
+		//Add two cards to drawStackAmount
+		drawStackAmount += 2;
 	}
 	
 	private static void setColor() {
+		CardSuit suit;
+		
 		//Prompt the player to set the suit of the wild card and set it to their choice
+//		currentCard.setSuit(suit);
 	}
 	
 	private static Player checkForWinner() {

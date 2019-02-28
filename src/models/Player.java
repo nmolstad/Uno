@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
 	private String name;
-	private ArrayList<Card> hand;
+	private ArrayList<Card> hand = new ArrayList<>();
 	
 	public Player(String name) {
 		
@@ -31,11 +31,13 @@ public class Player {
 		hand.add(card);
 	}
 	
-	public Card playCard() {
-		//Remove the Card from hand
+	public Card playCard(int index) {
+		Card playedCard = hand.get(index);
 		
+		//Remove the Card from hand
+		hand.get(index);
 		
 		//Return that Card
-		return null;
+		return playedCard;
 	}
 }
