@@ -16,7 +16,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.setTitle("Uno");
-			stage.getIcons().add(new Image("file:cardImages/uno_logo.png"));
+			stage.getIcons().add(new Image("file:images/uno_logo.png"));
 			stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();

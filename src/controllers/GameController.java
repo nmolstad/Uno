@@ -15,15 +15,21 @@ public class GameController {
 	private ArrayList<Card> lastSeveralCards = new ArrayList<>();
 	private ArrayList<Integer> lastSeveralCardRotations = new ArrayList<>();
 	private boolean isClockwise;
+	private boolean multiDraw;
+	private boolean stackDrawCards;
 	private int turnCount;
 	private Player currentPlayer;
 	private Player winner;
 	private Card currentCard;
+	private int stackAmount;
+	private boolean stackInProgress;
 	
-	public void initializeGame(String[] playerNames) {
+	public void initializeGame(String[] playerNames, boolean multiDraw, boolean stackDrawCards) {
 		//Set all of the variables to the default values
 		isClockwise = true;
 		turnCount = 0;
+		stackAmount = 0;
+		stackInProgress = false;
 		winner = null;
 		
 		//Create a new instance of DrawDeck and shuffle the deck
@@ -40,6 +46,9 @@ public class GameController {
 		for(int i = 0; i < players.length; i++) {
 			players[i] = new Player(playerNames[i]);
 		}
+		
+		this.multiDraw = multiDraw;
+		this.stackDrawCards = stackDrawCards;
 		
 		//Deal the cards to every player in the game
 		dealCards();
@@ -85,22 +94,38 @@ public class GameController {
 	}
 	
 	public boolean playCard(int cardIndex) {
-		if(checkMatch(currentPlayer.getHand().get(cardIndex))) {
-			boolean isActionCard;
-			currentCard = discardPile.insertCard(currentPlayer.playCard(cardIndex));
-			
-			checkForWinner();
-			
-			isActionCard = currentCard.getType() == CardType.DRAW_TWO || currentCard.getType() == CardType.SKIP || currentCard.getType() == CardType.REVERSE || currentCard.getType() == CardType.WILD_DRAW_FOUR;
-			if(isActionCard) {
+		if(stackInProgress) {
+			if(currentPlayer.getHand().get(cardIndex).getType() == CardType.DRAW_TWO) {
+				currentCard = discardPile.insertCard(currentPlayer.playCard(cardIndex));
+				
+				checkForWinner();
+				
 				performAction();
+				
+				setPlayersNumberOfCards();
+				setLastCard();
+				return true;
+			} else {
+				return false;
 			}
-			
-			setPlayersNumberOfCards();
-			setLastCard();
-			return true;
 		} else {
-			return false;
+			if(checkMatch(currentPlayer.getHand().get(cardIndex))) {
+				boolean isActionCard;
+				currentCard = discardPile.insertCard(currentPlayer.playCard(cardIndex));
+				
+				checkForWinner();
+				
+				isActionCard = currentCard.getType() == CardType.DRAW_TWO || currentCard.getType() == CardType.SKIP || currentCard.getType() == CardType.REVERSE || currentCard.getType() == CardType.WILD_DRAW_FOUR;
+				if(isActionCard) {
+					performAction();
+				}
+				
+				setPlayersNumberOfCards();
+				setLastCard();
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 	
@@ -159,8 +184,20 @@ public class GameController {
 		}
 		//If the card is a draw two, skip the next players turn and make them draw two cards.
 		else if(currentCard.getType() == CardType.DRAW_TWO) {
-			skipTurn();
-			drawCard(2);
+			if(stackDrawCards) {
+				stackAmount += 2;
+				if(checkForDrawCard()) {
+					stackInProgress = true;
+				} else {
+					stackInProgress = false;
+					skipTurn();
+					drawCard(stackAmount);
+					stackAmount = 0;
+				}
+			} else {
+				skipTurn();
+				drawCard(2);
+			}
 		}
 		//If the card is a reverse, set isClockwise to false if true or vice-versa
 		else if(currentCard.getType() == CardType.REVERSE) {
@@ -171,7 +208,24 @@ public class GameController {
 			skipTurn();
 			drawCard(4);
 		}
+	}
+	
+	private boolean checkForDrawCard() {
+		boolean hasDrawCard = false;
 		
+		setCurrentPlayer();
+		
+		for(int i = 0; i < currentPlayer.getHand().size() && !hasDrawCard; i++) {
+			hasDrawCard = currentPlayer.getHand().get(i).getType() == CardType.DRAW_TWO;
+		}
+		
+		if(isClockwise) {
+			currentPlayer = players[Math.abs(--turnCount) % players.length];
+		} else {
+			currentPlayer = players[Math.abs(++turnCount) % players.length];
+		}
+		
+		return hasDrawCard;
 	}
 	
 	private void skipTurn() {
@@ -272,5 +326,9 @@ public class GameController {
 			lastSeveralCards.add(null);
 			lastSeveralCardRotations.add(null);
 		}
+	}
+	
+	public boolean getMultiDrawSetting() {
+		return multiDraw;
 	}
 }

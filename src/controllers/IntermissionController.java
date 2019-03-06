@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,16 +19,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import models.Card;
 import models.Player;
 
 public class IntermissionController {
 
-	private Stage window;
 	private GameController game;
 	private ObservableList<Player> players;
 	
+	@FXML private HBox currentPlayerHbox;
 	@FXML private Label currentPlayerName;
 	@FXML private TableView<Player> playersInfo;
 	@FXML private TableColumn<Player, String> names;
@@ -38,9 +40,9 @@ public class IntermissionController {
     @FXML private ImageView drawPile2;
     @FXML private ImageView drawPile3;
     @FXML private ImageView drawPile4;
+    @FXML private Button readyButton;
 	
-	public void setupScene(GameController currentGame, Stage currentWindow) {
-		window = currentWindow;
+	public void setupScene(GameController currentGame) {
 		game = currentGame;
 		currentPlayerName.setText(game.getCurrentPlayer().getName());
 		names.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
@@ -50,6 +52,7 @@ public class IntermissionController {
 		playersInfo.setItems(getPlayers());
 		setDrawPileCards();
 		setTurnRotationImage();
+		centerCurrentPlayerHbox();
 	}
 	
 	@FXML void playerReady(ActionEvent event) {
@@ -100,6 +103,11 @@ public class IntermissionController {
 			currentCardImage.setRotate(previousRotations.get(4));
 			break;
 		}
+	}
+	
+	private void centerCurrentPlayerHbox() {
+		double width = 85 + (game.getCurrentPlayer().getName().length() * 15);
+		currentPlayerHbox.setLayoutX(600-width);
 	}
 	
 	private void setTurnRotationImage() {

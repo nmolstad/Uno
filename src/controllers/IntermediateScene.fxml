@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -7,6 +8,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
@@ -37,16 +39,23 @@
           <TableColumn fx:id="numberOfCards" maxWidth="120.0" prefWidth="118.0" text="Number of Cards" />
         </columns>
       </TableView>
-      <Label fx:id="currentPlayerName" layoutX="535.0" layoutY="555.0" prefHeight="85.0" prefWidth="249.0" text="Playername" textFill="WHITE">
-         <font>
-            <Font size="46.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="149.0" fitWidth="164.0" layoutX="389.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="file:images/player_icon.png" />
-         </image>
-      </ImageView>
+      <HBox fx:id="currentPlayerHbox" layoutX="406.0" layoutY="536.0" prefHeight="100.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:images/player_icon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="currentPlayerName" prefHeight="85.0" text="Playername" textFill="WHITE">
+               <font>
+                  <Font size="46.0" />
+               </font>
+               <HBox.margin>
+                  <Insets top="40.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
       <ImageView fx:id="turnRotation" fitHeight="51.0" fitWidth="52.0" layoutX="844.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="file:images/clockwise_turn_rotation.png" />

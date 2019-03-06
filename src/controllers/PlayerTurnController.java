@@ -109,9 +109,19 @@ public class PlayerTurnController {
     
     
     @FXML void drawCard() {
-    	game.drawCard(1);
-    	updateScene();
-    	centerCards();
+    	if(game.getMultiDrawSetting()) {
+    		game.drawCard(1);
+    		updateScene();
+    		centerCards();
+    	} else {
+    		game.drawCard(1);
+    		updateScene();
+    		centerCards();
+    		if(!game.checkForMatch()) {
+    			game.setCurrentPlayer();
+    			goToIntermediateScene();
+    		}
+    	}
     }
 	
 	public void setupScene(GameController currentGame, Stage currentWindow) {
@@ -272,7 +282,7 @@ public class PlayerTurnController {
 			Scene intermediateScene = new Scene(intermissionParent);
 			
 			IntermissionController intermission = loader.getController();
-			intermission.setupScene(game, window);
+			intermission.setupScene(game);
 			
 			Stage newWindow = window;
 			newWindow.setWidth(1200);

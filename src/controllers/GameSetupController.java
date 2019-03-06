@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -40,13 +41,15 @@ public class GameSetupController {
 	@FXML private Label label10;
 	@FXML private Button startButton;
 	@FXML private Label playerAmountLabel;
+	@FXML private CheckBox drawSetting;
+	@FXML private CheckBox stackSetting;
 	
 	@FXML void startGame(ActionEvent event) {
 		GameController game = new GameController();
 		getNames();
 		
 		if(checkPlayerAmount() > 1) {
-			game.initializeGame(getPlayerNames());
+			game.initializeGame(getPlayerNames(), drawSetting.isSelected(), stackSetting.isSelected());
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("PlayerTurnScene.fxml"));

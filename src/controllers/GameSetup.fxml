@@ -102,8 +102,8 @@
       </Button>
       <HBox layoutX="525.0" layoutY="671.0" prefHeight="17.0" prefWidth="254.0" spacing="25.0">
          <children>
-            <CheckBox mnemonicParsing="false" text="Stack draw cards" textFill="WHITE" />
-            <CheckBox mnemonicParsing="false" text="Draw until match" textFill="WHITE" />
+            <CheckBox fx:id="drawSetting" mnemonicParsing="false" selected="true" text="Draw until match" textFill="WHITE" />
+            <CheckBox fx:id="stackSetting" mnemonicParsing="false" text="Stack draw cards" textFill="WHITE" />
          </children>
       </HBox>
       <Label layoutX="426.0" layoutY="664.0" text="Settings:" textFill="WHITE">
