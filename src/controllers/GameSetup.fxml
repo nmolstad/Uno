@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameSetupController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="900.0" stroke="BLACK" strokeType="INSIDE" width="1200.0">
+         <fill>
+            <LinearGradient endX="0.48571428571428577" endY="1.0" startX="0.4857142857142857">
+               <stops>
+                  <Stop color="#7c0101" />
+                  <Stop color="#ff0505" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="500.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" rotate="7.0">
+         <image>
+            <Image url="file:images/uno_logo.png" />
+         </image>
+      </ImageView>
+      <VBox layoutX="464.0" layoutY="242.0" prefHeight="370.0" prefWidth="273.0">
+         <children>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 1" textFill="WHITE" />
+                  <TextField fx:id="p1TextField" prefWidth="200.0" promptText="Enter Player 1's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 2" textFill="WHITE" />
+                  <TextField fx:id="p2TextField" prefWidth="200.0" promptText="Enter Player 2's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 3" textFill="WHITE" />
+                  <TextField fx:id="p3TextField" prefWidth="200.0" promptText="Enter Player 3's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 4" textFill="WHITE" />
+                  <TextField fx:id="p4TextField" prefWidth="200.0" promptText="Enter Player 4's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 5" textFill="WHITE" />
+                  <TextField fx:id="p5TextField" prefWidth="200.0" promptText="Enter Player 5's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 6" textFill="WHITE" />
+                  <TextField fx:id="p6TextField" prefWidth="200.0" promptText="Enter Player 6's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 7" textFill="WHITE" />
+                  <TextField fx:id="p7TextField" prefWidth="200.0" promptText="Enter Player 7's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 8" textFill="WHITE" />
+                  <TextField fx:id="p8TextField" prefWidth="200.0" promptText="Enter Player 8's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="107.0" prefWidth="398.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 9" textFill="WHITE" />
+                  <TextField fx:id="p9TextField" prefWidth="200.0" promptText="Enter Player 9's name" />
+               </children>
+            </HBox>
+            <HBox prefHeight="61.0" prefWidth="356.0" spacing="20.0">
+               <children>
+                  <Label prefWidth="50.0" text="Player 10" textFill="WHITE" />
+                  <TextField fx:id="p10TextField" prefWidth="200.0" promptText="Enter Player 10's name" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Button fx:id="startButton" layoutX="525.0" layoutY="730.0" mnemonicParsing="false" onAction="#startGame" text="Start!">
+         <font>
+            <Font name="Arial" size="40.0" />
+         </font>
+      </Button>
+      <HBox layoutX="525.0" layoutY="671.0" prefHeight="17.0" prefWidth="254.0" spacing="25.0">
+         <children>
+            <CheckBox mnemonicParsing="false" text="Stack draw cards" textFill="WHITE" />
+            <CheckBox mnemonicParsing="false" text="Draw until match" textFill="WHITE" />
+         </children>
+      </HBox>
+      <Label layoutX="426.0" layoutY="664.0" text="Settings:" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="playerAmountLabel" layoutX="454.0" layoutY="830.0" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="448.0" layoutY="186.0" text="Enter between 2 and 10 players" textFill="WHITE">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

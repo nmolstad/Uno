@@ -1,33 +1,30 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import enums.*;
+import javafx.beans.binding.SetExpression;
 import models.*;
 
 public class GameController {
-
-	private static Player[] players;
-	private static DrawDeck drawPile;
-	private static DiscardDeck discardPile;
-	private static boolean isClockwise;
-	private static int turnCount;
-	private static Player currentPlayer;
-	private static Player winner;
-	private static Card currentCard;
-	private static int drawStackAmount;
 	
-	public static void run() {
-		initializeGame();
-		
-		//While there is not a winner, have the currentPlayer take a turn
-		
-	}
+	private Player[] players;
+	private DrawDeck drawPile;
+	private DiscardDeck discardPile;
+	private ArrayList<Card> lastSeveralCards = new ArrayList<>();
+	private ArrayList<Integer> lastSeveralCardRotations = new ArrayList<>();
+	private boolean isClockwise;
+	private int turnCount;
+	private Player currentPlayer;
+	private Player winner;
+	private Card currentCard;
 	
-	private static void initializeGame() {
-		int playerAmount;
-		
+	public void initializeGame(String[] playerNames) {
 		//Set all of the variables to the default values
 		isClockwise = true;
 		turnCount = 0;
+		winner = null;
 		
 		//Create a new instance of DrawDeck and shuffle the deck
 		drawPile = new DrawDeck();
@@ -37,51 +34,85 @@ public class GameController {
 		discardPile = new DiscardDeck();
 		
 		//Instantiate players with the number of players the user wishes to play with
-		playerAmount = 1;
-		players = new Player[playerAmount];
+		players = new Player[playerNames.length];
 		
 		//Instantiate each player in players
 		for(int i = 0; i < players.length; i++) {
-			String name = "";
-			players[i] = new Player(name);
+			players[i] = new Player(playerNames[i]);
 		}
 		
 		//Deal the cards to every player in the game
 		dealCards();
+		
+		setNoPreviousCards();
 		
 		//Set the current card and player
 		//Add the last card in the draw pile to the discard pile
 		currentCard = discardPile.insertCard(drawPile.removeCard());
 		currentPlayer = players[0];
 		
+		setLastCard();
+		
+		//If the first card is a skip, skip the first player.
+		if(currentCard.getType() == CardType.SKIP) {
+			skipTurn();
+		}
+		//If the first card is a draw two, make the first player draw two cards and skip their turn.
+		else if(currentCard.getType() == CardType.DRAW_TWO) {
+			drawCard(2);
+			skipTurn();
+		}
+		//If the first card is a reverse, set isClockwise to false if true or vice-versa
+		else if(currentCard.getType() == CardType.REVERSE) {
+			isClockwise = !isClockwise;
+		}
+		//If the first card is a wild draw four, make the first player draw four cards and skip their turn.
+		else if(currentCard.getType() == CardType.WILD_DRAW_FOUR) {
+			drawCard(4);
+			skipTurn();
+		}
 	}
 	
-	private static void dealCards() {
+	private void dealCards() {
 		//Loop through each player seven times, adding a card from the drawPile to the player's hand.
 		for(int i = 0; i < 7; i++) {
 			for(Player player : players) {
 				player.drawCard(drawPile.removeCard());
 			}
 		}
+		
+		setPlayersNumberOfCards();
 	}
 	
-	private static void takeTurn() {
-		//Display the player's hand
-		
-		//Loop through the player's hand and check if any cards match the current card
-		
-		//If at least one card matches, allow the player to play a matching card.
-		
-		
-		//Otherwise, draw a card from the drawPile
-		
+	public boolean playCard(int cardIndex) {
+		if(checkMatch(currentPlayer.getHand().get(cardIndex))) {
+			boolean isActionCard;
+			currentCard = discardPile.insertCard(currentPlayer.playCard(cardIndex));
+			
+			checkForWinner();
+			
+			isActionCard = currentCard.getType() == CardType.DRAW_TWO || currentCard.getType() == CardType.SKIP || currentCard.getType() == CardType.REVERSE || currentCard.getType() == CardType.WILD_DRAW_FOUR;
+			if(isActionCard) {
+				performAction();
+			}
+			
+			setPlayersNumberOfCards();
+			setLastCard();
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-	private static void displayHand() {
-		//For every card in the current players hand, display it to the user
+	public void setCurrentPlayer() {
+		if(isClockwise) {
+			currentPlayer = players[Math.abs(++turnCount) % players.length];
+		} else {
+			currentPlayer = players[Math.abs(--turnCount) % players.length];
+		}
 	}
 	
-	private static boolean checkMatch(Card card) {
+	private boolean checkMatch(Card card) {
 		boolean isMatch = false;
 		boolean isSuitMatch = card.getSuit() == currentCard.getSuit();
 		boolean isTypeMatch = card.getType() == currentCard.getType();
@@ -94,64 +125,152 @@ public class GameController {
 		return isMatch;
 	}
 	
-	private static void replenishDrawPile() {
+	private void replenishDrawPile() {
 		//Put the contents of discardPile in drawPile and clear discardPile.
 		drawPile.setCards(discardPile.getCards());
-		discardPile.getCards().clear();
+		discardPile = new DiscardDeck();
+		
+		setNoPreviousCards();
 		
 		//Add the last card from drawPile to discardPile
 		discardPile.insertCard(drawPile.removeCard());
 		
+		setLastCard();
+		
 		//Shuffle drawPile
 		drawPile.shuffleDeck();
+		
+		resetWildCards();
 	}
 	
-	private static void performAction() {
-		//If the card is a skip, call skipTurn()
+	private void resetWildCards() {
+		//Set the suit of any wild cards back to null
+		for(Card card : drawPile.getCards()) {
+			if(card.getType() == CardType.WILD || card.getType() == CardType.WILD_DRAW_FOUR) {
+				card.setSuit(null);
+			}
+		}
+	}
+	
+	private void performAction() {
+		//If the card is a skip, skip the next players turn
 		if(currentCard.getType() == CardType.SKIP) {
 			skipTurn();
 		}
-		//If the card is a draw two, call drawTwo and add drawStackAmount to the next player, then call skipTurn.
+		//If the card is a draw two, skip the next players turn and make them draw two cards.
 		else if(currentCard.getType() == CardType.DRAW_TWO) {
-			drawTwo();
 			skipTurn();
+			drawCard(2);
 		}
 		//If the card is a reverse, set isClockwise to false if true or vice-versa
 		else if(currentCard.getType() == CardType.REVERSE) {
 			isClockwise = !isClockwise;
 		}
-		//If the card is a wild, call setColor
-		else if(currentCard.getType() == CardType.WILD) {
-			setColor();
-		}
-		//If the card is a wild draw four, call drawTwo twice and setColor, then add drawStackAmount to the next player and call skipTurn.
+		//If the card is a wild draw four, set the color, skip the next players turn and make them draw four cards.
 		else if(currentCard.getType() == CardType.WILD_DRAW_FOUR) {
-			setColor();
-			drawTwo();
-			drawTwo();
-			
+			skipTurn();
+			drawCard(4);
 		}
 		
 	}
 	
-	private static void skipTurn() {
+	private void skipTurn() {
 		//Add 1 to the turn rotation if isClockwise is true or subtract 1 if isClockwise is false
 		turnCount = isClockwise ? turnCount + 1 : turnCount - 1;
-	}
-	
-	private static void drawTwo() {
-		//Add two cards to drawStackAmount
-		drawStackAmount += 2;
-	}
-	
-	private static void setColor() {
-		CardSuit suit;
 		
-		//Prompt the player to set the suit of the wild card and set it to their choice
-//		currentCard.setSuit(suit);
+		//Set the current player, in case any further action needs to take place on this player
+		currentPlayer = players[Math.abs(turnCount) % players.length];
 	}
 	
-	private static Player checkForWinner() {
-		return null;
+	public void drawCard(int amount) {
+		for(int i = 0; i < amount; i++) {
+			currentPlayer.drawCard(drawPile.removeCard());
+			
+			if(drawPile.getCards().size() < 1) {
+				replenishDrawPile();
+			}
+			
+			setPlayersNumberOfCards();
+		}
+	}
+	
+	public void setColor(CardSuit color) {
+		//Set the suit of the wild card
+		currentCard.setSuit(color);
+	}
+	
+	public boolean checkForMatch() {
+		boolean isMatch = false;
+		
+		//Iterate through the current players hand, and see if any cards match the current card
+		for(int i = 0; i < currentPlayer.getHand().size() && !isMatch; i++) {
+			isMatch = checkMatch(currentPlayer.getHand().get(i));
+		}
+		
+		return isMatch;
+	}
+	
+	private boolean checkForWinner() {
+		boolean isWinner = false;
+		
+		//Check if the current player has any cards left in their hand
+		if(currentPlayer.getHand().size() < 1) {
+			winner = currentPlayer;
+			isWinner = true;
+		}
+		
+		return isWinner;
+	}
+	
+	public Player[] getPlayers() {
+		return players;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public Card getCurrentCard() {
+		return currentCard;
+	}
+	
+	public Player getWinner() {
+		return winner;
+	}
+	
+	private void setPlayersNumberOfCards() {
+		for(Player player : players) {
+			player.setNumberOfCards();
+		}
+	}
+	
+	public ArrayList<Card> getLastSeveralCards() {
+		return lastSeveralCards;
+	}
+	
+	public ArrayList<Integer> getLastSeveralCardRotations() {
+		return lastSeveralCardRotations;
+	}
+	
+	private void setLastCard() {
+		lastSeveralCards.remove(0);
+		lastSeveralCards.add(currentCard);
+		lastSeveralCardRotations.remove(0);
+		if(lastSeveralCards.get(3) == null) {
+			lastSeveralCardRotations.add(0);
+		} else {
+			lastSeveralCardRotations.add(new Random().nextInt(359));
+		}
+	}
+	
+	public boolean getTurnRotation() {
+		return isClockwise;
+	}
+	
+	private void setNoPreviousCards() {
+		for(int i = 0; i < 5; i++) {
+			lastSeveralCards.add(null);
+			lastSeveralCardRotations.add(null);
+		}
 	}
 }

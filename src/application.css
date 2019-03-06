@@ -1,0 +1,4 @@
+#mainMenu{
+	-fx-background-image: url("/cardImages/table.jpg");
+	-fx-background-color: red;
+}

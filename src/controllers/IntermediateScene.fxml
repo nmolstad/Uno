@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="900.0" maxWidth="1200.0" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.IntermissionController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="900.0" stroke="BLACK" strokeType="INSIDE" width="1200.0">
+         <fill>
+            <LinearGradient endX="0.48571428571428577" endY="1.0" startX="0.4857142857142857">
+               <stops>
+                  <Stop color="#7c0101" />
+                  <Stop color="#ff0505" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Circle fill="WHITE" layoutX="599.0" layoutY="389.0" radius="120.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="10.0" />
+      <ImageView fitHeight="140.0" fitWidth="213.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" rotate="5.0">
+         <image>
+            <Image url="file:images/uno_logo.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="playersInfo" layoutX="916.0" layoutY="26.0" prefHeight="200.0" prefWidth="240.0">
+        <columns>
+          <TableColumn fx:id="names" maxWidth="120.0" prefWidth="120.0" text="Player" />
+          <TableColumn fx:id="numberOfCards" maxWidth="120.0" prefWidth="118.0" text="Number of Cards" />
+        </columns>
+      </TableView>
+      <Label fx:id="currentPlayerName" layoutX="535.0" layoutY="555.0" prefHeight="85.0" prefWidth="249.0" text="Playername" textFill="WHITE">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="149.0" fitWidth="164.0" layoutX="389.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:images/player_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="turnRotation" fitHeight="51.0" fitWidth="52.0" layoutX="844.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="file:images/clockwise_turn_rotation.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="drawPile4" fitHeight="179.0" fitWidth="124.0" layoutX="542.0" layoutY="299.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="drawPile3" fitHeight="179.0" fitWidth="124.0" layoutX="542.0" layoutY="299.0" pickOnBounds="true" preserveRatio="true" rotate="34.0" />
+      <ImageView fx:id="drawPile2" fitHeight="179.0" fitWidth="124.0" layoutX="542.0" layoutY="299.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="drawPile1" fitHeight="179.0" fitWidth="124.0" layoutX="542.0" layoutY="299.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="currentCardImage" fitHeight="193.0" fitWidth="114.0" layoutX="542.0" layoutY="299.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="readyButton" layoutX="470.0" layoutY="708.0" mnemonicParsing="false" onAction="#playerReady" prefHeight="116.0" prefWidth="259.0" text="Ready">
+         <font>
+            <Font size="64.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

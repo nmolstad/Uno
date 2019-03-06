@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WinController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="900.0" stroke="BLACK" strokeType="INSIDE" width="1200.0">
+         <fill>
+            <LinearGradient endX="0.48571428571428577" endY="1.0" startX="0.4857142857142857">
+               <stops>
+                  <Stop color="#7c0101" />
+                  <Stop color="#ff0505" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Button fx:id="playAgain" layoutX="447.0" layoutY="639.0" mnemonicParsing="false" onAction="#playAgain" style="-fx-background-color: lightgreen;" text="Play Again">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Button>
+      <HBox fx:id="winnerHbox" layoutX="279.0" layoutY="357.0" prefHeight="233.0">
+         <children>
+            <ImageView fitHeight="233.0" fitWidth="294.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:images/trophy.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="winnerName" text="Winner" textFill="WHITE">
+               <font>
+                  <Font size="96.0" />
+               </font>
+               <padding>
+                  <Insets top="60.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <ImageView fitHeight="272.0" fitWidth="553.0" layoutX="397.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true" rotate="7.0">
+         <image>
+            <Image url="file:images/uno_logo.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -1,12 +1,17 @@
 package controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class ViewController {
+
+	Stage window;
+	GameController game;
+	MainMenuController mainMenu;
+	GameSetupController gameSetup;
+	PlayerTurnController playerTurn;
+	IntermissionController intermission;
 	
-	public static void display() {
-		
+	public ViewController(Stage window) {
+		this.window = window;
 	}
 }
