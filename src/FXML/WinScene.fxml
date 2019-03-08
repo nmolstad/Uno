@@ -51,5 +51,10 @@
             <Image url="file:images/uno_logo.png" />
          </image>
       </ImageView>
+      <Button fx:id="exitButton" layoutX="543.0" layoutY="769.0" mnemonicParsing="false" onAction="#exitApplication" style="-fx-background-color: lightgreen;" text="Exit">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

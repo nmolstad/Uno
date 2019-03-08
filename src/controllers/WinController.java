@@ -18,11 +18,12 @@ public class WinController {
 	@FXML private HBox winnerHbox;
 	@FXML private Label winnerName;
 	@FXML private Button playAgain;
+	@FXML private Button exitButton;
 	
 	@FXML void playAgain(ActionEvent event) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("GameSetup.fxml"));
+			loader.setLocation(getClass().getResource("/FXML/GameSetup.fxml"));
 			Parent winParent = loader.load();
 			Scene winScene = new Scene(winParent);
 			
@@ -33,6 +34,11 @@ public class WinController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@FXML void exitApplication(ActionEvent event) {
+		Stage window = (Stage) ((Node)event.getTarget()).getScene().getWindow();
+		window.close();
 	}
 	
 	public void setWinner(String name) {

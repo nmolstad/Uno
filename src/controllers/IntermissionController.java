@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import models.Card;
@@ -40,6 +39,21 @@ public class IntermissionController {
     @FXML private ImageView drawPile2;
     @FXML private ImageView drawPile3;
     @FXML private ImageView drawPile4;
+    @FXML private Label feed1;
+    @FXML private Label feed2;
+    @FXML private Label feed3;
+    @FXML private Label feed4;
+    @FXML private Label feed5;
+    @FXML private Label effect1;
+    @FXML private Label effect2;
+    @FXML private Label effect3;
+    @FXML private Label effect4;
+    @FXML private Label effect5;
+    @FXML private ImageView feedCard1;
+    @FXML private ImageView feedCard2;
+    @FXML private ImageView feedCard3;
+    @FXML private ImageView feedCard4;
+    @FXML private ImageView feedCard5;
     @FXML private Button readyButton;
 	
 	public void setupScene(GameController currentGame) {
@@ -51,6 +65,7 @@ public class IntermissionController {
 		playersInfo.setPrefHeight(height);
 		playersInfo.setItems(getPlayers());
 		setDrawPileCards();
+		setFeedMessages();
 		setTurnRotationImage();
 		centerCurrentPlayerHbox();
 	}
@@ -58,7 +73,7 @@ public class IntermissionController {
 	@FXML void playerReady(ActionEvent event) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("PlayerTurnScene.fxml"));
+			loader.setLocation(getClass().getResource("/FXML/PlayerTurnScene.fxml"));
 			Parent playerTurnParent = loader.load();
 			Scene playerTurnScene = new Scene(playerTurnParent);
 			
@@ -101,6 +116,43 @@ public class IntermissionController {
 		case 1:
 			currentCardImage.setImage(new Image("file:images/"+ previousCards.get(4).getCardName() + ".jpg"));
 			currentCardImage.setRotate(previousRotations.get(4));
+			break;
+		}
+	}
+	
+	private void setFeedMessages() {
+		ArrayList<String> messages = game.getFeedMessages();
+		ArrayList<Card> cards = game.getLastSeveralCards();
+		ArrayList<String> effects = game.getFeedEffects();
+		
+		int feedActivity = 0;
+		for(String message : messages) {
+			if(message != null) {
+				feedActivity++;
+			}
+		}
+		
+		switch(feedActivity) {
+		case 5:
+			feed5.setText(messages.get(0));
+			feedCard5.setImage(new Image("file:images/"+ cards.get(0).getCardName() + ".jpg"));
+			effect5.setText(effects.get(0));
+		case 4:
+			feed4.setText(messages.get(1));
+			feedCard4.setImage(new Image("file:images/"+ cards.get(1).getCardName() + ".jpg"));
+			effect4.setText(effects.get(1));
+		case 3:
+			feed3.setText(messages.get(2));
+			feedCard3.setImage(new Image("file:images/"+ cards.get(2).getCardName() + ".jpg"));
+			effect3.setText(effects.get(2));
+		case 2:
+			feed2.setText(messages.get(3));
+			feedCard2.setImage(new Image("file:images/"+ cards.get(3).getCardName() + ".jpg"));
+			effect2.setText(effects.get(3));
+		case 1:
+			feed1.setText(messages.get(4));
+			feedCard1.setImage(new Image("file:images/"+ cards.get(4).getCardName() + ".jpg"));
+			effect1.setText(effects.get(4));
 			break;
 		}
 	}

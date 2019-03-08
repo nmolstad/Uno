@@ -11,14 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-
 public class MainMenuController {
 	
     @FXML private Button playButton;
 	
 	@FXML void goToGameSetup(ActionEvent event) {
 		try {
-			Parent gameSetupParent = FXMLLoader.load(getClass().getResource("GameSetup.fxml"));
+			Parent gameSetupParent = FXMLLoader.load(getClass().getResource("/FXML/GameSetup.fxml"));
 			Scene gameSetupScene = new Scene(gameSetupParent);
 			
 			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

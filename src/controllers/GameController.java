@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import enums.*;
-import javafx.beans.binding.SetExpression;
 import models.*;
 
 public class GameController {
@@ -14,6 +13,8 @@ public class GameController {
 	private DiscardDeck discardPile;
 	private ArrayList<Card> lastSeveralCards = new ArrayList<>();
 	private ArrayList<Integer> lastSeveralCardRotations = new ArrayList<>();
+	private ArrayList<String> feedMessages = new ArrayList<>();
+	private ArrayList<String> feedEffects = new ArrayList<>();
 	private boolean isClockwise;
 	private boolean multiDraw;
 	private boolean stackDrawCards;
@@ -53,14 +54,16 @@ public class GameController {
 		//Deal the cards to every player in the game
 		dealCards();
 		
-		setNoPreviousCards();
+		resetInfoTrackers();
 		
 		//Set the current card and player
 		//Add the last card in the draw pile to the discard pile
 		currentCard = discardPile.insertCard(drawPile.removeCard());
 		currentPlayer = players[0];
 		
-		setLastCard();
+		setInfoTrackers();
+		feedMessages.remove(4);
+		feedMessages.add(null);
 		
 		//If the first card is a skip, skip the first player.
 		if(currentCard.getType() == CardType.SKIP) {
@@ -100,10 +103,15 @@ public class GameController {
 				
 				checkForWinner();
 				
+				feedEffects.remove(0);
+				setInfoTrackers();
 				performAction();
 				
+				if(feedEffects.size() < 5) {
+					feedEffects.add(null);
+				}
+				
 				setPlayersNumberOfCards();
-				setLastCard();
 				return true;
 			} else {
 				return false;
@@ -115,13 +123,18 @@ public class GameController {
 				
 				checkForWinner();
 				
+				feedEffects.remove(0);
+				setInfoTrackers();
 				isActionCard = currentCard.getType() == CardType.DRAW_TWO || currentCard.getType() == CardType.SKIP || currentCard.getType() == CardType.REVERSE || currentCard.getType() == CardType.WILD_DRAW_FOUR;
 				if(isActionCard) {
 					performAction();
 				}
 				
+				if(feedEffects.size() < 5) {
+					feedEffects.add(null);
+				}
+				
 				setPlayersNumberOfCards();
-				setLastCard();
 				return true;
 			} else {
 				return false;
@@ -155,12 +168,12 @@ public class GameController {
 		drawPile.setCards(discardPile.getCards());
 		discardPile = new DiscardDeck();
 		
-		setNoPreviousCards();
+		setInfoTrackers();
 		
 		//Add the last card from drawPile to discardPile
 		discardPile.insertCard(drawPile.removeCard());
 		
-		setLastCard();
+		setInfoTrackers();
 		
 		//Shuffle drawPile
 		drawPile.shuffleDeck();
@@ -181,6 +194,7 @@ public class GameController {
 		//If the card is a skip, skip the next players turn
 		if(currentCard.getType() == CardType.SKIP) {
 			skipTurn();
+			feedEffects.add("skipping " + currentPlayer.getName() + "'s turn");
 		}
 		//If the card is a draw two, skip the next players turn and make them draw two cards.
 		else if(currentCard.getType() == CardType.DRAW_TWO) {
@@ -188,25 +202,30 @@ public class GameController {
 				stackAmount += 2;
 				if(checkForDrawCard()) {
 					stackInProgress = true;
+					feedEffects.add("increasing the stack to " + stackAmount + " cards");
 				} else {
 					stackInProgress = false;
 					skipTurn();
 					drawCard(stackAmount);
+					feedEffects.add("making " + currentPlayer.getName() + " draw " + stackAmount + " cards");
 					stackAmount = 0;
 				}
 			} else {
 				skipTurn();
 				drawCard(2);
+				feedEffects.add("making " + currentPlayer.getName() + " draw 2 cards");
 			}
 		}
 		//If the card is a reverse, set isClockwise to false if true or vice-versa
 		else if(currentCard.getType() == CardType.REVERSE) {
 			isClockwise = !isClockwise;
+			feedEffects.add("reversing the turn rotation");
 		}
 		//If the card is a wild draw four, set the color, skip the next players turn and make them draw four cards.
 		else if(currentCard.getType() == CardType.WILD_DRAW_FOUR) {
 			skipTurn();
 			drawCard(4);
+			feedEffects.add("making " + currentPlayer.getName() + " draw 4 cards");
 		}
 	}
 	
@@ -306,7 +325,15 @@ public class GameController {
 		return lastSeveralCardRotations;
 	}
 	
-	private void setLastCard() {
+	public ArrayList<String> getFeedMessages() {
+		return feedMessages;
+	}
+	
+	public ArrayList<String> getFeedEffects() {
+		return feedEffects;
+	}
+	
+	private void setInfoTrackers() {
 		lastSeveralCards.remove(0);
 		lastSeveralCards.add(currentCard);
 		lastSeveralCardRotations.remove(0);
@@ -315,16 +342,20 @@ public class GameController {
 		} else {
 			lastSeveralCardRotations.add(new Random().nextInt(359));
 		}
+		feedMessages.remove(0);
+		feedMessages.add(currentPlayer.getName() + " played");
 	}
 	
 	public boolean getTurnRotation() {
 		return isClockwise;
 	}
 	
-	private void setNoPreviousCards() {
+	private void resetInfoTrackers() {
 		for(int i = 0; i < 5; i++) {
 			lastSeveralCards.add(null);
 			lastSeveralCardRotations.add(null);
+			feedMessages.add(null);
+			feedEffects.add(null);
 		}
 	}
 	

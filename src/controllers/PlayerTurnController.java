@@ -2,13 +2,10 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import enums.CardSuit;
-import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -66,6 +63,21 @@ public class PlayerTurnController {
     @FXML private Button greenButton;
     @FXML private Button yellowButton;
     @FXML private Label wildCardPrompt;
+    @FXML private Label feed1;
+    @FXML private Label feed2;
+    @FXML private Label feed3;
+    @FXML private Label feed4;
+    @FXML private Label feed5;
+    @FXML private Label effect1;
+    @FXML private Label effect2;
+    @FXML private Label effect3;
+    @FXML private Label effect4;
+    @FXML private Label effect5;
+    @FXML private ImageView feedCard1;
+    @FXML private ImageView feedCard2;
+    @FXML private ImageView feedCard3;
+    @FXML private ImageView feedCard4;
+    @FXML private ImageView feedCard5;
     
     private void playCard(int index) {
     	if(game.playCard(currentCardDisplay + index)) {
@@ -86,7 +98,6 @@ public class PlayerTurnController {
 		boolean isWild = game.getCurrentCard().getSuit() == null;
 		if(isWild && game.getCurrentPlayer().getHand().size() > 0) {
 			disableArrowButtons();
-			wildCardPrompt.setText("Set Wild Card Color");
 			setChooseColorVisibility(true);
 			
 			redButton.setOnAction(e -> setWildCardColor(CardSuit.RED));
@@ -107,6 +118,11 @@ public class PlayerTurnController {
 		goToIntermediateScene();
 	}
     
+    private void setFirstWild(CardSuit color) {
+    	game.setColor(color);
+    	setPlayerCardImages();
+    	setChooseColorVisibility(false);
+    }
     
     @FXML void drawCard() {
     	if(game.getMultiDrawSetting()) {
@@ -138,7 +154,13 @@ public class PlayerTurnController {
 		setArrowVisibility();
 		setTurnRotationImage();
 		centerCards();
-		wildCardClicked();
+		if(game.getCurrentCard().getSuit() == null) {
+			setChooseColorVisibility(true);
+			redButton.setOnAction(e -> setFirstWild(CardSuit.RED));
+			yellowButton.setOnAction(e -> setFirstWild(CardSuit.YELLOW));
+			greenButton.setOnAction(e -> setFirstWild(CardSuit.GREEN));
+			blueButton.setOnAction(e -> setFirstWild(CardSuit.BLUE));
+		}
 		checkForMatch();
 		
 		cardImage0.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> playCard(0));
@@ -152,6 +174,7 @@ public class PlayerTurnController {
 		cardImage8.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> playCard(8));
 		cardImage9.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> playCard(9));
 		setDrawPileCards();
+		setFeedMessages();
 	}
 	
 	private void updateScene() {
@@ -160,6 +183,7 @@ public class PlayerTurnController {
 		setChooseColorVisibility(false);
 		setArrowVisibility();
 		setDrawPileCards();
+		setFeedMessages();
 		setTurnRotationImage();
 		checkForMatch();
 	}
@@ -218,8 +242,9 @@ public class PlayerTurnController {
 			if(currentPlayerHand.size() > counter) {
 				Image cardImg = new Image("file:images/"+ currentPlayerHand.get(counter++).getCardName() + ".jpg");
 				((ImageView) image).setImage(cardImg);
+				((ImageView) image).setVisible(true);
 			} else {
-				((ImageView) image).setImage(null);
+				((ImageView) image).setVisible(false);
 			}
 		}
 	}
@@ -255,6 +280,43 @@ public class PlayerTurnController {
 		}
 	}
 	
+	private void setFeedMessages() {
+		ArrayList<String> messages = game.getFeedMessages();
+		ArrayList<Card> cards = game.getLastSeveralCards();
+		ArrayList<String> effects = game.getFeedEffects();
+		
+		int feedActivity = 0;
+		for(String message : messages) {
+			if(message != null) {
+				feedActivity++;
+			}
+		}
+		
+		switch(feedActivity) {
+		case 5:
+			feed5.setText(messages.get(0));
+			feedCard5.setImage(new Image("file:images/"+ cards.get(0).getCardName() + ".jpg"));
+			effect5.setText(effects.get(0));
+		case 4:
+			feed4.setText(messages.get(1));
+			feedCard4.setImage(new Image("file:images/"+ cards.get(1).getCardName() + ".jpg"));
+			effect4.setText(effects.get(1));
+		case 3:
+			feed3.setText(messages.get(2));
+			feedCard3.setImage(new Image("file:images/"+ cards.get(2).getCardName() + ".jpg"));
+			effect3.setText(effects.get(2));
+		case 2:
+			feed2.setText(messages.get(3));
+			feedCard2.setImage(new Image("file:images/"+ cards.get(3).getCardName() + ".jpg"));
+			effect2.setText(effects.get(3));
+		case 1:
+			feed1.setText(messages.get(4));
+			feedCard1.setImage(new Image("file:images/"+ cards.get(4).getCardName() + ".jpg"));
+			effect1.setText(effects.get(4));
+			break;
+		}
+	}
+	
 	private void checkForMatch() {
 		if(game.checkForMatch()) {
 			drawCardButton.setDisable(true);
@@ -269,6 +331,7 @@ public class PlayerTurnController {
 	}
 	
 	private void setChooseColorVisibility(Boolean isVisible) {
+		wildCardPrompt.setVisible(isVisible);
 		for(Node button : chooseColor.getChildren()) {
 			button.setVisible(isVisible);
 		}
@@ -277,7 +340,7 @@ public class PlayerTurnController {
 	private void goToIntermediateScene() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("IntermediateScene.fxml"));
+			loader.setLocation(getClass().getResource("/FXML/IntermediateScene.fxml"));
 			Parent intermissionParent = loader.load();
 			Scene intermediateScene = new Scene(intermissionParent);
 			
@@ -296,7 +359,7 @@ public class PlayerTurnController {
 	private void goToWinScreen() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("WinScene.fxml"));
+			loader.setLocation(getClass().getResource("/FXML/WinScene.fxml"));
 			Parent winParent = loader.load();
 			Scene winScene = new Scene(winParent);
 			

@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +54,7 @@ public class GameSetupController {
 			game.initializeGame(getPlayerNames(), drawSetting.isSelected(), stackSetting.isSelected());
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("PlayerTurnScene.fxml"));
+				loader.setLocation(getClass().getResource("/FXML/PlayerTurnScene.fxml"));
 				Parent playerTurnParent = loader.load();
 				Scene playerTurnScene = new Scene(playerTurnParent);
 				
@@ -60,7 +62,6 @@ public class GameSetupController {
 				
 				PlayerTurnController controller = loader.getController();
 				controller.setupScene(game, window);
-				window.setWidth(1200);
 				window.setScene(playerTurnScene);
 				window.show();
 			} catch (IOException e) {
@@ -115,6 +116,20 @@ public class GameSetupController {
 		return playerAmount;
 	}
 	
+	public static void addTextLimiter(final TextField tf) {
+		int maxLength = 10;
+		
+	    tf.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+	            if (tf.getText().length() > maxLength) {
+	                String s = tf.getText().substring(0, maxLength);
+	                tf.setText(s);
+	            }
+	        }
+	    });
+	}
+	
 	private String[] getPlayerNames() {
 		String[] playerNames = new String[checkPlayerAmount()];
 		ArrayList<String> theNames = new ArrayList<>();
@@ -129,5 +144,19 @@ public class GameSetupController {
 		}
 		
 		return playerNames;
+	}
+	
+	@FXML
+	public void initialize() {
+		addTextLimiter(p1TextField);
+		addTextLimiter(p2TextField);
+		addTextLimiter(p3TextField);
+		addTextLimiter(p4TextField);
+		addTextLimiter(p5TextField);
+		addTextLimiter(p6TextField);
+		addTextLimiter(p7TextField);
+		addTextLimiter(p8TextField);
+		addTextLimiter(p9TextField);
+		addTextLimiter(p10TextField);
 	}
 }
