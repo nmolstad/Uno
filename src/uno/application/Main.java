@@ -1,4 +1,4 @@
-package application;
+package uno.application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/FXML/MainMenu.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/uno/fxml/MainMenu.fxml"));
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.setTitle("Uno");

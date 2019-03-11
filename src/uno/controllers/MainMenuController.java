@@ -1,4 +1,4 @@
-package controllers;
+package uno.controllers;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class MainMenuController {
 	
 	@FXML void goToGameSetup(ActionEvent event) {
 		try {
-			Parent gameSetupParent = FXMLLoader.load(getClass().getResource("/FXML/GameSetup.fxml"));
+			Parent gameSetupParent = FXMLLoader.load(getClass().getResource("/uno/fxml/GameSetup.fxml"));
 			Scene gameSetupScene = new Scene(gameSetupParent);
 			
 			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();

@@ -1,10 +1,10 @@
-package models;
+package uno.models;
 
 import java.util.Collections;
 import java.util.Random;
 
-import enums.CardSuit;
-import enums.CardType;
+import uno.enums.CardSuit;
+import uno.enums.CardType;
 
 public class DrawDeck extends Deck {
 	

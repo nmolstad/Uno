@@ -1,4 +1,4 @@
-package controllers;
+package uno.controllers;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class WinController {
 	@FXML void playAgain(ActionEvent event) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/FXML/GameSetup.fxml"));
+			loader.setLocation(getClass().getResource("/uno/fxml/GameSetup.fxml"));
 			Parent winParent = loader.load();
 			Scene winScene = new Scene(winParent);
 			

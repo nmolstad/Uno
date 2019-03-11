@@ -1,4 +1,4 @@
-package enums;
+package uno.enums;
 
 public enum CardType {
 ZERO,

@@ -1,11 +1,11 @@
 
-package controllers;
+package uno.controllers;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import enums.*;
-import models.*;
+import uno.enums.*;
+import uno.models.*;
 
 public class GameController {
 	

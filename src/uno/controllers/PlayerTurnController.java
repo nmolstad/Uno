@@ -1,9 +1,8 @@
-package controllers;
+package uno.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import enums.CardSuit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,8 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import models.Card;
-import models.Player;
+import uno.enums.CardSuit;
+import uno.models.Card;
+import uno.models.Player;
 
 public class PlayerTurnController {
 	private GameController game;
@@ -340,7 +340,7 @@ public class PlayerTurnController {
 	private void goToIntermediateScene() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/FXML/IntermediateScene.fxml"));
+			loader.setLocation(getClass().getResource("/uno/fxml/IntermediateScene.fxml"));
 			Parent intermissionParent = loader.load();
 			Scene intermediateScene = new Scene(intermissionParent);
 			
@@ -359,7 +359,7 @@ public class PlayerTurnController {
 	private void goToWinScreen() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/FXML/WinScene.fxml"));
+			loader.setLocation(getClass().getResource("/uno/fxml/WinScene.fxml"));
 			Parent winParent = loader.load();
 			Scene winScene = new Scene(winParent);
 			

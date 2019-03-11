@@ -1,8 +1,8 @@
-package models;
+package uno.models;
 
 import java.util.ArrayList;
 
-import enums.*;
+import uno.enums.*;
 
 public class Deck {
 	protected ArrayList<Card> cards = new ArrayList<>();

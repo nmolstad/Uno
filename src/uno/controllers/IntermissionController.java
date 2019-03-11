@@ -1,4 +1,4 @@
-package controllers;
+package uno.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import models.Card;
-import models.Player;
+import uno.models.Card;
+import uno.models.Player;
 
 public class IntermissionController {
 
@@ -73,7 +73,7 @@ public class IntermissionController {
 	@FXML void playerReady(ActionEvent event) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/FXML/PlayerTurnScene.fxml"));
+			loader.setLocation(getClass().getResource("/uno/fxml/PlayerTurnScene.fxml"));
 			Parent playerTurnParent = loader.load();
 			Scene playerTurnScene = new Scene(playerTurnParent);
 			

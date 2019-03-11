@@ -1,4 +1,4 @@
-package models;
+package uno.models;
 
 public class DiscardDeck extends Deck {
 

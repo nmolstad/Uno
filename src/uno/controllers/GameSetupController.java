@@ -1,4 +1,4 @@
-package controllers;
+package uno.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class GameSetupController {
 			game.initializeGame(getPlayerNames(), drawSetting.isSelected(), stackSetting.isSelected());
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/FXML/IntermediateScene.fxml"));
+				loader.setLocation(getClass().getResource("/uno/fxml/IntermediateScene.fxml"));
 				Parent intermissionParent = loader.load();
 				Scene intermissionScene = new Scene(intermissionParent);
 				

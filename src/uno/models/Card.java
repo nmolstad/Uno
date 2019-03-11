@@ -1,7 +1,7 @@
-package models;
+package uno.models;
 
-import enums.CardSuit;
-import enums.CardType;
+import uno.enums.CardSuit;
+import uno.enums.CardType;
 
 public class Card {
 	private CardSuit suit;
