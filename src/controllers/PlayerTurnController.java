@@ -25,7 +25,7 @@ import models.Card;
 import models.Player;
 
 public class PlayerTurnController {
-	private GameController game = new GameController();
+	private GameController game;
 	private int currentCardDisplay = 0;
 	private ObservableList<Player> players;
 	private Stage window;

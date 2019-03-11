@@ -54,15 +54,15 @@ public class GameSetupController {
 			game.initializeGame(getPlayerNames(), drawSetting.isSelected(), stackSetting.isSelected());
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/FXML/PlayerTurnScene.fxml"));
-				Parent playerTurnParent = loader.load();
-				Scene playerTurnScene = new Scene(playerTurnParent);
+				loader.setLocation(getClass().getResource("/FXML/IntermediateScene.fxml"));
+				Parent intermissionParent = loader.load();
+				Scene intermissionScene = new Scene(intermissionParent);
 				
 				Stage window = (Stage) ((Node)event.getTarget()).getScene().getWindow();
 				
-				PlayerTurnController controller = loader.getController();
-				controller.setupScene(game, window);
-				window.setScene(playerTurnScene);
+				IntermissionController controller = loader.getController();
+				controller.setupScene(game);
+				window.setScene(intermissionScene);
 				window.show();
 			} catch (IOException e) {
 				e.printStackTrace();
