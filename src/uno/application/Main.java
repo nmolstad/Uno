@@ -20,6 +20,7 @@ public class Main extends Application {
 			stage.setResizable(false);
 			stage.setWidth(1200);
 			stage.setHeight(928);
+			stage.setOnCloseRequest(e -> {e.consume(); menu.Main.showMenu();});
 			stage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
